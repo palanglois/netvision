@@ -22,7 +22,6 @@ todo : le jour ou j'ai que ca a foutre
 -- bar de chargement
 -- gerer les matrices (ou tensor) images numpy (sans avoir a les save quelque avant)
 -- make a package pipy
-
 """
 
 
