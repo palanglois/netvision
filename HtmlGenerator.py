@@ -116,6 +116,16 @@ class HtmlGenerator:
         body.append('\t</h3>\n')
         self.body.append("".join(body))
 
+    def add_subsubtitle(self, sub_title_content):
+        body = []
+        body.append('\t<h4>\n')
+        body.append(f'\t\t{sub_title_content}\n')
+        body.append('\t</h4>\n')
+        self.body.append("".join(body))
+
+    def add_linebreak(self):
+        self.body.append(f'</br>\n')
+
     def image(self, path, size="300px"):
         body = []
         body.append(f'<a download={path} href={path} title="ImageName"> '
@@ -131,6 +141,9 @@ class HtmlGenerator:
 
     def text(self, text):
         return text
+
+    def add_textFile(self, path):
+        self.body.append(f"<object  width=\"2000\" height=\"1000\"  type=\"text/plain\" data=\"{path}\" border=\"0\" ></object>")
 
     def mesh(self, mesh_path, title=""):
         self.hasMeshHeader = True

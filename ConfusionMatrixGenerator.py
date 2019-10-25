@@ -1,9 +1,11 @@
 import numpy as np
+from os.path import join, dirname
 
 
 class ColorMap:
     def __init__(self):
-        self.colormap = np.load("colormap.npy")
+        self.colormap_path = join(dirname(__file__), "colormap.npy")
+        self.colormap = np.load(self.colormap_path)
 
     def __call__(self, index):
         """
