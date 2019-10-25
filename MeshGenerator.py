@@ -69,7 +69,7 @@ class MeshGenerator:
                 renderer_my_mesh = new THREE.WebGLRenderer();\n\
                 renderer_my_mesh.setPixelRatio(window.devicePixelRatio);\n\
                 renderer_my_mesh.setSize(windowX, windowY);\n\
-                renderer_my_mesh.setClearColor(new THREE.Color(\"hsl(5, 0%, 70%)\"));\n\
+                renderer_my_mesh.setClearColor(new THREE.Color(\"#D3D3D3\"));\n\
                 my_mesh.appendChild(renderer_my_mesh.domElement);\n\
                 /* Controls */\n\
                 controls_my_mesh = new THREE.OrbitControls(camera_my_mesh, renderer_my_mesh.domElement);\n\

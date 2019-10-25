@@ -27,13 +27,14 @@ todo : le jour ou j'ai que ca a foutre
 
 
 class HtmlGenerator:
-    def __init__(self, path=None):
+    def __init__(self, path=None, title="NetVision visualization"):
         self.path = path
         self.head = []
         self.body = []
         self.curveGen = CurveGenerator.CurveGenerator()
         self.meshGen = MeshGenerator.MeshGenerator()
         self.tables = []
+        self.title = title
         self.hasCurveHeader = False
         self.hasMeshHeader = False
         self.make_header()
@@ -73,12 +74,12 @@ class HtmlGenerator:
                 output_file.write(webpage)
         return webpage
 
-    def make_body(self, title="My Cool Visualization"):
+    def make_body(self):
         self.body.append('<body style=\"background-color: lightgrey;\">\n')
         self.body.append('<center>\n')
         self.body.append('\t<div class=\"blank\"></div>\n')
         self.body.append('\t<h1>\n')
-        self.body.append(f'\t\t{title}\n')
+        self.body.append(f'\t\t{self.title}\n')
         self.body.append('\t</h1>\n')
         self.body.append('</center>\n')
         self.body.append('<div class=\"blank\"></div>\n')
@@ -90,12 +91,12 @@ class HtmlGenerator:
         """
         self.body.append(html_content)
 
-    def title(self, title_content):
+    def add_title(self, title_content):
         body = []
         body.append('\t<h2>\n')
         body.append(f'\t\t{title_content}\n')
         body.append('\t</h2>\n')
-        return "".join(body)
+        self.body.append("".join(body))
 
     def add_subtitle(self, sub_title_content):
         body = []
@@ -106,8 +107,8 @@ class HtmlGenerator:
 
     def image(self, path, size="300px"):
         body = []
-        body.append(f'<td> <a download={path} href={path} title="ImageName"> '
-                    f'<img  src={path} width={size} height={size} /></a></td>\n')
+        body.append(f'<a download={path} href={path} title="ImageName"> '
+                    f'<img  src={path} width={size} height={size} /></a>\n')
         return "".join(body)
 
     def curve(self, data, title=None, x_labels=None, font_color="black", width="300px", ):
@@ -124,7 +125,7 @@ class HtmlGenerator:
         self.hasMeshHeader = True
         return self.meshGen.make_mesh(mesh_path, title)
 
-    def add_table(self, title="MyTable"):
+    def add_table(self, title=""):
         table = Table.Table(title)
         self.body.append(table)
         return table

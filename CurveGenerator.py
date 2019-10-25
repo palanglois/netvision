@@ -1,9 +1,10 @@
 from os.path import join, dirname
 
+
 class CurveGenerator:
     def __init__(self):
         self.curve_it = 0
-        self.colors = ["#c0392b", " #2980b9", "#27ae60"]
+        self.colors = ["#c0392b", "#2980b9", "#27ae60"]
         self.chart_path = join(dirname(__file__), "js/Chart.bundle.min.js")
 
     def make_header(self):
@@ -21,7 +22,7 @@ class CurveGenerator:
         out_string = ""
 
         data_real_dict = {"type": "line",
-                          "datasets": [{"data": v, 'label': k,
+                          "datasets": [{"data": v, 'label': k, "lineTension": 0,
                                         "xLabels": [x + 1 for x in range(len(data[[x for x in data.keys()][0]]))],
                                         'borderColor': self.colors[i % len(self.colors)]}
                                        for i, (k, v) in enumerate(data.items())]}
@@ -37,15 +38,14 @@ class CurveGenerator:
         if title is not None:
             options_dict["title"] = {"display": "false", "text": title, "fontColor": font_color}
         options = str(options_dict)
-        out_string += "  <td align=\"center\" width=%s><canvas id=\"line-chart-%i\" " \
-                      "width=\"100%%\" height=\"100%%\"></canvas>\n" % (width, self.curve_it)
+        out_string += "  <canvas id=\"line-chart-%i\" " \
+                      "width=\"100%%\" height=\"100%%\"></canvas>\n" % (self.curve_it)
         ctx = "document.getElementById(\"line-chart-" + str(self.curve_it) + "\")"
         out_string += "  <script>\n"
         out_string += "    var myLineChart = new Chart(%s, {type: 'line', data: %s, options: %s});\n" % \
                       (ctx, str(data_real_dict), options)
         out_string += "    myLineChart.canvas.parentNode.style.width = '%s';\n" % width
         out_string += "  </script>\n"
-        out_string += "  </td>\n"
         self.curve_it += 1
 
         return out_string
