@@ -5,16 +5,20 @@ import ConfusionMatrixGenerator
 
 """
 TODO : 
-path de sortie = un dossier 'html'
 
-make minified version of javascript
 Zoom curves
+make minified version of javascript
+
 Flag deploy
     -- add a zipping function of the whole sources
+path de sortie = un dossier 'html'
 
 Add barPlot
+
 Gerer les pointclouds
 Gerer les textures
+Ajouter un curseur qui gere un mesh au cours du temps
+
 Add minimized obj converter
 Mesh generator should resize itself
 
