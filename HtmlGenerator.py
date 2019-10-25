@@ -1,22 +1,22 @@
 import CurveGenerator
 import MeshGenerator
 import Table
+import ConfusionMatrixGenerator
 
 """
 TODO : 
 path de sortie = un dossier 'html'
 
-Gerer les dico de params
+make minified version of javascript
 Zoom curves
 Flag deploy
     -- add a zipping function of the whole sources
-    -- 
-ConfMatrix
+
 Add barPlot
 Gerer les pointclouds
 Gerer les textures
 Add minimized obj converter
-
+Mesh generator should resize itself
 
 todo : le jour ou j'ai que ca a foutre
 -- bar de chargement
@@ -33,10 +33,12 @@ class HtmlGenerator:
         self.body = []
         self.curveGen = CurveGenerator.CurveGenerator()
         self.meshGen = MeshGenerator.MeshGenerator()
+        self.confMatGen = ConfusionMatrixGenerator.ConfusionMatrixGenerator()
         self.tables = []
         self.title = title
         self.hasCurveHeader = False
         self.hasMeshHeader = False
+        self.hasDict = False
         self.make_header()
         self.make_body()
 
@@ -58,8 +60,14 @@ class HtmlGenerator:
         if self.hasMeshHeader:
             self.head.append(self.meshGen.make_header())
 
+    def add_css(self):
+        if self.hasDict:
+            self.head.append(self.add_css_for_add_dict())
+
     def return_html(self):
         self.add_javascript_libraries()
+        self.add_css()
+
         self.body.append(self.meshGen.end_mesh())
         self.body.append("</body>\n")
         self.head.append('</head>\n')
@@ -130,11 +138,50 @@ class HtmlGenerator:
         self.body.append(table)
         return table
 
+    def add_confMat(self,  data, rows_titles=None, colums_titles=None, title="Confusion", colormap=None):
+        return self.confMatGen.make_confusionmatrix( data, rows_titles, colums_titles, title=title, colormap=colormap)
+
+    def add_dict(self,  data, title="PARAMETERS"):
+        self.hasDict = True
+        out_string = f"<span class=\"value\">{title} </span></br>\n"
+        for key in data.keys():
+            out_string += f"<span class=\"key\"> {key} </span> : <span class=\"value\">{data[key]} </span></br>\n"
+        return out_string
+
+    def add_css_for_add_dict(self):
+        outstring = ""
+        outstring += "<style>\n\
+              .key {\n\
+                color: #2980b9;\n\
+                font-weight:bold; \n\
+              }\n\
+              .value { /* OK, a bit contrived... */\n\
+                color: #c0392b;\n\
+                font-weight:bold; \n\
+                }</style>\n\
+            "
+        return outstring
 
 if __name__ == '__main__':
+    import numpy as np
     webpage = HtmlGenerator(path="test/test.html")
-    webpage.add_html_in_body(webpage.mesh("test/output_atlas.obj"))
-    webpage.add_html_in_body(webpage.mesh("test/output_atlas.obj"))
-    webpage.add_html_in_body(webpage.mesh("test/output_atlas.obj"))
-    webpage.add_html_in_body(webpage.mesh("test/output_atlas.obj"))
+    mydict = {
+        "key1": 0,
+        "key2": 1,
+        "key3": [5,6,7],
+        "key4": np.pi,
+        "key5": "toto",
+        "key6": {"toto":1, "tata":2},
+    }
+    webpage.add_html_in_body(webpage.add_dict(mydict))
+    rows = 20
+    cols = 22
+    rand_matrix = np.random.randint(-50,50,(rows,cols))/5.0
+    # webpage.add_html_in_body(webpage.mesh("test/output_atlas.obj"))
+    #
+    # import matplotlib.pyplot as plt
+    # colormap = plt.get_cmap("nipy_spectral")
+    # webpage.add_html_in_body(webpage.add_confMat(rand_matrix, colormap=colormap))
+    #
+    # webpage.add_html_in_body(webpage.mesh("test/output_atlas.obj"))
     webpage.return_html()
