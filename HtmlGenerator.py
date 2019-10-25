@@ -56,6 +56,7 @@ class HtmlGenerator:
 
     def return_html(self):
         self.add_javascript_libraries()
+        self.body.append(self.meshGen.end_mesh())
         self.body.append("</body>\n")
         self.head.append('</head>\n')
 
