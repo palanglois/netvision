@@ -29,16 +29,21 @@ class Table:
         self.columns += [str(i + len(self.columns) + 1) for i in range(number)]
 
     def add_row(self, data, title=""):
-        if title == "":
-            title = str(len(self.rows) + 1)
         self.are_columns_fixed = True
-        if len(data) != len(self.columns):
-            raise TableException("Error! The number of data you fed does not match the number of columns you defined.")
-        self._make_td_str()
-        row_str = f"<tr>\n{self.td_row_title_str}{title}</td>\n{self.td_str}"
-        row_str += f"</td>\n{self.td_str}".join([self._pretreat_data(str(x)) for x in data])
-        row_str += "</td>\n</tr>\n"
-        self.rows.append(row_str)
+        title_row = 0
+        nb_rows_to_add = len(data) // len(self.columns) + 1
+        padding = len(self.columns) - len(data) % len(self.columns)
+        for i in range(nb_rows_to_add):
+            if title == "":
+                title_row = str(len(self.rows) + 1)
+            self._make_td_str()
+            row_str = f"<tr>\n{self.td_row_title_str}{title_row}</td>\n{self.td_str}"
+            row_data = data[i*len(self.columns):(i+1)*len(self.columns)]
+            if i == nb_rows_to_add - 1:
+                row_data += [""] * padding
+            row_str += f"</td>\n{self.td_str}".join([self._pretreat_data(str(x)) for x in row_data])
+            row_str += "</td>\n</tr>\n"
+            self.rows.append(row_str)
 
     def _pretreat_data(self, data):
         # Trick to properly reshape the Chart js objects

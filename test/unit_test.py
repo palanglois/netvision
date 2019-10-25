@@ -48,6 +48,7 @@ def main():
 
     table2.add_row(["data1", webpage.image("lena.jpeg"), webpage.add_dict(mydict), 0])
     table2.add_row([{"data1": 0.5}, webpage.image("lena.jpeg"), 0, webpage.add_confMat(rand_matrix)])
+    table2.add_row(["Additional_data"]*9)
 
     webpage.return_html()
 
