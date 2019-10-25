@@ -23,8 +23,23 @@ def main():
     table2 = webpage.add_table()
     table2.add_columns(["Column1", "Column2"])
     table2.add_titleless_columns(2)
-    table2.add_row(["data1", webpage.image("lena.jpeg"), 0, 0])
-    table2.add_row([{"data1": 0.5}, webpage.image("lena.jpeg"), 0, 0])
+
+    mydict = {
+        "key1": 0,
+        "key2": 1,
+        "key3": [5, 6, 7],
+        "key4": 3.141592,
+        "key5": "toto",
+        "key6": {"toto": 1, "tata": 2},
+    }
+
+    import numpy as np
+    rows = 10
+    cols = 6
+    rand_matrix = np.random.randint(-50, 50, (rows, cols)) / 5.0
+
+    table2.add_row(["data1", webpage.image("lena.jpeg"), webpage.add_dict(mydict), 0])
+    table2.add_row([{"data1": 0.5}, webpage.image("lena.jpeg"), 0, webpage.add_confMat(rand_matrix)])
 
     webpage.return_html()
 

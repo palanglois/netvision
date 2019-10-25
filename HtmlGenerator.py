@@ -137,10 +137,10 @@ class HtmlGenerator:
         self.body.append(table)
         return table
 
-    def add_confMat(self,  data, rows_titles=None, colums_titles=None, title="Confusion", colormap=None):
-        return self.confMatGen.make_confusionmatrix( data, rows_titles, colums_titles, title=title, colormap=colormap)
+    def add_confMat(self, data, rows_titles=None, colums_titles=None, title="Confusion", colormap=None):
+        return self.confMatGen.make_confusionmatrix(data, rows_titles, colums_titles, title=title, colormap=colormap)
 
-    def add_dict(self,  data, title="PARAMETERS"):
+    def add_dict(self, data, title="PARAMETERS"):
         self.hasDict = True
         out_string = f"<span class=\"value\">{title} </span></br>\n"
         for key in data.keys():
@@ -161,21 +161,23 @@ class HtmlGenerator:
             "
         return outstring
 
+
 if __name__ == '__main__':
     import numpy as np
+
     webpage = HtmlGenerator(path="test/test.html")
     mydict = {
         "key1": 0,
         "key2": 1,
-        "key3": [5,6,7],
+        "key3": [5, 6, 7],
         "key4": np.pi,
         "key5": "toto",
-        "key6": {"toto":1, "tata":2},
+        "key6": {"toto": 1, "tata": 2},
     }
     webpage.add_html_in_body(webpage.add_dict(mydict))
     rows = 20
     cols = 22
-    rand_matrix = np.random.randint(-50,50,(rows,cols))/5.0
+    rand_matrix = np.random.randint(-50, 50, (rows, cols)) / 5.0
     # webpage.add_html_in_body(webpage.mesh("test/output_atlas.obj"))
     #
     # import matplotlib.pyplot as plt

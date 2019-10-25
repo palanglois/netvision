@@ -13,15 +13,16 @@ class MeshGenerator:
         self.event_listener = []
         self.added_mesh = []
 
-
     def make_header(self):
         ret_str = ""
-        js_libs = [self.three_path ,self.Detector_path, self.OrbitControls_path, self.OBJLoader_path, self.MTLLoader_path]
+        js_libs = [self.three_path, self.Detector_path, self.OrbitControls_path, self.OBJLoader_path,
+                   self.MTLLoader_path]
         print(js_libs)
         for file in js_libs:
             with open(file, "r") as js_file:
                 print(file)
-                ret_str += "  <script type=\"text/javascript\">\n  " + js_file.read().replace("\n", "\n  ") + " \n</script>\n"
+                ret_str += "  <script type=\"text/javascript\">\n  " + js_file.read().replace("\n",
+                                                                                              "\n  ") + " \n</script>\n"
         return ret_str
 
     def make_mesh(self, mesh_path, title=None):
@@ -79,8 +80,6 @@ class MeshGenerator:
                 /* Events */\n\
                 }\
                 "
-
-
 
         init_function += "\n\
             function animate_my_mesh() {\n\
