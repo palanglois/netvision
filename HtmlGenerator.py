@@ -2,26 +2,11 @@ from os.path import join, dirname
 import sys
 import CurveGenerator
 import MeshGenerator
+import Table
 
 """
 TODO : faire les verif dans HTML type
 """
-
-
-class Table:
-    def __init__(self, title="My-Table"):
-        self.hasRow = False
-        self.title = title
-        self.columns = []
-        self.columns.append((self.title, self.type_builder.text))
-
-    def add_column(self, title=None, types=None):
-        if self.hasRow:
-            print("This table is already defined")
-            sys.exit("This table is already defined")
-
-    def add_line(self):
-        self.hasRow = True
 
 
 class HtmlGenerator:
@@ -31,6 +16,7 @@ class HtmlGenerator:
         self.body = []
         self.curveGen = CurveGenerator.CurveGenerator()
         self.meshGen = MeshGenerator.MeshGenerator()
+        self.tables = []
         self.hasCurveHeader = False
         self.hasMeshHeader = False
         self.make_header()
@@ -61,7 +47,7 @@ class HtmlGenerator:
 
         begin_html = '<!DOCTYPE html>\n<html>\n'
         self.head_str = "".join(self.head)
-        self.body_str = "".join(self.body)
+        self.body_str = "".join([str(x) for x in self.body])
         end_html = "</html>\n"
         webpage = begin_html + self.head_str + self.body_str + end_html
         if self.path is not None:
@@ -93,12 +79,12 @@ class HtmlGenerator:
         body.append('\t</h2>\n')
         return "".join(body)
 
-    def subtitle(self, sub_title_content):
+    def add_subtitle(self, sub_title_content):
         body = []
         body.append('\t<h3>\n')
         body.append(f'\t\t{sub_title_content}\n')
         body.append('\t</h3>\n')
-        return "".join(body)
+        self.body.append("".join(body))
 
     def image(self, path, size="300px"):
         body = []
@@ -116,9 +102,14 @@ class HtmlGenerator:
     def text(self, text):
         return text
 
-    def mesh(self, mesh_path, title=None):
+    def mesh(self, mesh_path, title=""):
         self.hasMeshHeader = True
         return self.meshGen.make_mesh(mesh_path, title)
+
+    def add_table(self, title="MyTable"):
+        table = Table.Table(title)
+        self.body.append(table)
+        return table
 
 
 if __name__ == '__main__':
