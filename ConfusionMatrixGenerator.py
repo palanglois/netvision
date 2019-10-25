@@ -1,5 +1,6 @@
 import numpy as np
 
+
 class ColorMap:
     def __init__(self):
         self.colormap = np.load("colormap.npy")
@@ -13,14 +14,12 @@ class ColorMap:
         return colors
 
 
-
 class ConfusionMatrixGenerator:
     def __init__(self):
         self.colormap = ColorMap()
 
     def update_colormap(self, colormap):
         self.colormap = colormap
-
 
     def make_confusionmatrix(self, data, rows_titles, colums_titles, title="Confusion", colormap=None):
         if colormap is not None:
@@ -49,15 +48,15 @@ class ConfusionMatrixGenerator:
             outstr += f"<td style=\"text-align: center; font-weight: bold;\"> {rows_titles[i]} </td>\n"
 
             for j in range(data.shape[1]):
-                rgb_float = self.colormap(int(data_scaled[i,j]))[:3]
+                rgb_float = self.colormap(int(data_scaled[i, j]))[:3]
                 rgb_int = self.rgb(rgb_float)
                 color_str = f"rgb({rgb_int[0]}, {rgb_int[1]}, {rgb_int[2]})"
                 outstr += f"<td style=\"color: white ; text-align: center; background-color:{color_str}\"> {data[i, j]} </td>\n"
 
             outstr += f"<td  style=\"text-align: center; font-weight: bold;\" ></td>\n"
 
-            index = int((float(i)/float(data.shape[0])) * 255.0)
-            index_rescaled = int((float(i)/float(data.shape[0])) * (np.max(data) - np.min(data) ) + np.min(data) )
+            index = int((float(i) / float(data.shape[0])) * 255.0)
+            index_rescaled = int((float(i) / float(data.shape[0])) * (np.max(data) - np.min(data)) + np.min(data))
             rgb_float = self.colormap(index)[:3]
             rgb_int = self.rgb(rgb_float)
             color_str = f"rgb({rgb_int[0]}, {rgb_int[1]}, {rgb_int[2]})"
@@ -85,4 +84,3 @@ class ConfusionMatrixGenerator:
 
     def end_confusionmatrix(self):
         pass
-

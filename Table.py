@@ -51,7 +51,7 @@ class Table:
     def _make_td_str(self):
         row_title_weight = 5.
         self.width_percentage = 100. / float(len(self.columns) * row_title_weight + 1)
-        self.td_str = f"<td align=\"center\" width=\"{row_title_weight*self.width_percentage}%\">"
+        self.td_str = f"<td align=\"center\" width=\"{row_title_weight * self.width_percentage}%\">"
         self.td_row_title_str = f"<td style=\"font-weight: bold;\" align=\"center\" width=\"{self.width_percentage}%\">"
         self.td_str_bold = f"<td style=\"font-weight: bold;\" align=\"center\" width=\"{self.width_percentage}%\">"
 
