@@ -4,18 +4,21 @@ class MeshGenerator:
     def __init__(self):
         self.curve_it = 0
         self.colors = ["#c0392b", " #2980b9", "#27ae60"]
-        self.three_path = join(dirname(__file__), "three.js")
-        self.Detector_path = join(dirname(__file__), "Detector.js")
-        self.OrbitControls_path = join(dirname(__file__), "OrbitControls.js")
-        self.OBJLoader_path = join(dirname(__file__), "OBJLoader.js")
-        self.MTLLoader_path = join(dirname(__file__), "MTLLoader.js")
+        self.three_path = join(dirname(__file__), "js/three.js")
+        self.Detector_path = join(dirname(__file__), "js/Detector.js")
+        self.OrbitControls_path = join(dirname(__file__), "js/OrbitControls.js")
+        self.OBJLoader_path = join(dirname(__file__), "js/OBJLoader.js")
+        self.MTLLoader_path = join(dirname(__file__), "js/MTLLoader.js")
 
     def make_header(self):
         ret_str = ""
-        for file in [self.three_path ,self.Detector_path, self.OrbitControls_path, self.OBJLoader_path, self.MTLLoader_path]:
+        js_libs = [self.three_path ,self.Detector_path, self.OrbitControls_path, self.OBJLoader_path, self.MTLLoader_path]
+        print(js_libs)
+        for file in js_libs:
             with open(file, "r") as js_file:
-                ret_str += "  <script type=\"text/javascript\">\n  " + js_file.read().replace("\n", "\n  ") + "\n"
-            return ret_str
+                print(file)
+                ret_str += "  <script type=\"text/javascript\">\n  " + js_file.read().replace("\n", "\n  ") + " \n</script>\n"
+        return ret_str
 
     def make_mesh(self, mesh_path, title=None):
         out_string = f"<div id=\"mesh_{self.curve_it}\"> <h4>{title}</h4> </div>\n"
@@ -78,7 +81,7 @@ class MeshGenerator:
                 }\n\
             "
 
-        init_function.replace("my_mesh", "mesh_" + str(self.curve_it))
+        init_function = init_function.replace("my_mesh", "mesh_" + str(self.curve_it))
         out_string += init_function
 
         out_string += "\n\

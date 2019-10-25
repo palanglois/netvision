@@ -55,15 +55,15 @@ class HtmlGenerator:
 
     def add_javascript_libraries(self):
         if self.hasCurveHeader:
-            self.head.insert(-1, self.curveGen.make_header())
+            self.head.append(self.curveGen.make_header())
         if self.hasMeshHeader:
-            self.head.insert(-1, self.meshGen.make_header())
+            self.head.append(self.meshGen.make_header())
 
     def return_html(self):
+        self.add_javascript_libraries()
         self.body.append("</body>\n")
         self.head.append('</head>\n')
 
-        self.add_javascript_libraries()
         begin_html = '<!DOCTYPE html>\n<html>\n'
         self.head_str = "".join(self.head)
         self.body_str = "".join(self.body)
@@ -127,6 +127,9 @@ class HtmlGenerator:
         return self.meshGen.make_mesh(mesh_path, title)
 
 if __name__ == '__main__':
-    webpage = HtmlGenerator(path = "test.html")
-    webpage.add_html_in_body(webpage.mesh("output_atlas.js"))
+    webpage = HtmlGenerator(path = "test/test.html")
+    webpage.add_html_in_body(webpage.mesh("test/output_atlas.obj"))
+    webpage.add_html_in_body(webpage.mesh("test/output_atlas.obj"))
+    webpage.add_html_in_body(webpage.mesh("test/output_atlas.obj"))
+    webpage.add_html_in_body(webpage.mesh("test/output_atlas.obj"))
     webpage.return_html()

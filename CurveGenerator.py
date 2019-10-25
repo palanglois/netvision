@@ -4,7 +4,7 @@ class CurveGenerator:
     def __init__(self):
         self.curve_it = 0
         self.colors = ["#c0392b", " #2980b9", "#27ae60"]
-        self.chart_path = join(dirname(__file__), "Chart.bundle.min.js")
+        self.chart_path = join(dirname(__file__), "js/Chart.bundle.min.js")
 
     def make_header(self):
         with open(self.chart_path, "r") as charjs_file:
