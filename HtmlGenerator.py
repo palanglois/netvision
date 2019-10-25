@@ -1,11 +1,28 @@
-from os.path import join, dirname
-import sys
 import CurveGenerator
 import MeshGenerator
 import Table
 
 """
-TODO : faire les verif dans HTML type
+TODO : 
+path de sortie = un dossier 'html'
+
+Gerer les dico de params
+Zoom curves
+Flag deploy
+    -- add a zipping function of the whole sources
+    -- 
+ConfMatrix
+Add barPlot
+Gerer les pointclouds
+Gerer les textures
+Add minimized obj converter
+
+
+todo : le jour ou j'ai que ca a foutre
+-- bar de chargement
+-- gerer les matrices (ou tensor) images numpy (sans avoir a les save quelque avant)
+-- make a package pipy
+
 """
 
 

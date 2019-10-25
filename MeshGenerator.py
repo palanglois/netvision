@@ -1,5 +1,6 @@
 from os.path import join, dirname
 
+
 class MeshGenerator:
     def __init__(self):
         self.curve_it = 0
