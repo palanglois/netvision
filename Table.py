@@ -1,3 +1,6 @@
+from CurveGenerator import Curve
+
+
 class TableException(Exception):
     pass
 
@@ -30,27 +33,24 @@ class Table:
 
     def add_row(self, data, title=""):
         self.are_columns_fixed = True
-        title_row = 0
-        nb_rows_to_add = len(data) // len(self.columns) + 1
+        nb_rows_to_add = len(data) // len(self.columns)
         padding = len(self.columns) - len(data) % len(self.columns)
+        if len(data) % len(self.columns) != 0:
+            nb_rows_to_add += 1
         for i in range(nb_rows_to_add):
-            if title == "":
-                title_row = str(len(self.rows) + 1)
+            title_row = str(len(self.rows) + 1) if title == "" else title
             self._make_td_str()
             row_str = f"<tr>\n{self.td_row_title_str}{title_row}</td>\n{self.td_str}"
-            row_data = data[i*len(self.columns):(i+1)*len(self.columns)]
+            row_data = data[i * len(self.columns):(i + 1) * len(self.columns)]
             if i == nb_rows_to_add - 1:
                 row_data += [""] * padding
-            row_str += f"</td>\n{self.td_str}".join([self._pretreat_data(str(x)) for x in row_data])
+            row_str += f"</td>\n{self.td_str}".join([str(self._pretreat_data(x)) for x in row_data])
             row_str += "</td>\n</tr>\n"
             self.rows.append(row_str)
 
     def _pretreat_data(self, data):
-        # Trick to properly reshape the Chart js objects
-        if "new Chart(" in data:
-            width_begin = data.find("parentNode.style.width") + 24
-            width_end = data[width_begin:].find(';')
-            data = data.replace(data[width_begin:width_begin + width_end], f"\"{self.width_percentage}%\"")
+        if type(data) is Curve:
+            data.width = "inherit"
         return data
 
     def _make_td_str(self):

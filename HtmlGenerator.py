@@ -135,13 +135,10 @@ class HtmlGenerator:
     def add_image(self, path, size="300px"):
         self.body.append(self.image(path, size))
 
-        
     def curve(self, data, title=None, x_labels=None, font_color="black", width="300px", ):
-        body = []
-        body.append(self.curveGen.make_curve(data=data, font_color=font_color,
-                                             title=title, width=width, x_labels=x_labels))
         self.hasCurveHeader = True
-        return "".join(body)
+        return self.curveGen.make_curve(data=data, font_color=font_color,
+                                             title=title, width=width, x_labels=x_labels)
 
     def text(self, text):
         return text
