@@ -35,20 +35,23 @@ def main():
     table1 = webpage.add_table()
     table1.add_column("Accuracy1")
     table1.add_column("Accuracy2")
-    table1.add_column("Curve")
-    table1.add_column("Mesh")
-    curve = webpage.curve(curve_data, title="My curve")
-    table1.add_row([0, 0.5, curve, webpage.mesh("test/output_atlas.obj")], "line1")
+    # table1.add_column("Curve")
+    # table1.add_column("Mesh")
+    curve1 = webpage.curve(curve_data, title="My curve", width="300px")
+    curve2 = webpage.curve(curve_data, title="My curve 2", width="300px")
+    table1.add_row([curve1, curve2], "line1")
 
     # Make a 2nd table
     webpage.add_title("Table 2")
     table2 = webpage.add_table()
     table2.add_columns(["Column1", "Column2"])
-    table2.add_titleless_columns(2)
+    table2.add_titleless_columns(10)
 
-    table2.add_row(["data1", webpage.image("lena.jpeg"), webpage.add_dict(mydict), 0])
-    table2.add_row([{"data1": 0.5}, webpage.image("lena.jpeg"), 0, webpage.add_confMat(rand_matrix)])
+    table2.add_row(["data1", webpage.image("lena.jpeg"), webpage.dict(mydict), 0])
+    table2.add_row([{"data1": 0.5}, webpage.image("lena.jpeg"), 0, webpage.confMat(rand_matrix)])
     table2.add_row(["Additional_data"]*9)
+    table2.add_row(["Additional_data"]*9)
+    table2.add_row([webpage.image("lena.jpeg")]*29)
 
     webpage.return_html()
 

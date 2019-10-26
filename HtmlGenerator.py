@@ -135,7 +135,7 @@ class HtmlGenerator:
     def add_image(self, path, size="300px"):
         self.body.append(self.image(path, size))
 
-        
+
     def curve(self, data, title=None, x_labels=None, font_color="black", width="300px", ):
         body = []
         body.append(self.curveGen.make_curve(data=data, font_color=font_color,
@@ -158,10 +158,10 @@ class HtmlGenerator:
         self.body.append(table)
         return table
 
-    def add_confMat(self, data, rows_titles=None, colums_titles=None, title="Confusion", colormap=None):
+    def confMat(self, data, rows_titles=None, colums_titles=None, title="Confusion", colormap=None):
         return self.confMatGen.make_confusionmatrix(data, rows_titles, colums_titles, title=title, colormap=colormap)
 
-    def add_dict(self, data, title="PARAMETERS"):
+    def dict(self, data, title="PARAMETERS"):
         self.hasDict = True
         out_string = f"<span class=\"value\">{title} </span></br>\n"
         for key in data.keys():
