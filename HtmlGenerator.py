@@ -77,13 +77,18 @@ class HtmlGenerator:
 
         begin_html = '<!DOCTYPE html>\n<html>\n'
         self.head_str = "".join(self.head)
-        self.body_str = "".join([str(x) for x in self.body])
+        self.body_str = "".join([str(self._pretreat_data(x)) for x in self.body])
         end_html = "</html>\n"
         webpage = begin_html + self.head_str + self.body_str + end_html
         if self.path is not None:
             with open(self.path, 'w') as output_file:
                 output_file.write(webpage)
         return webpage
+
+    def _pretreat_data(self, data):
+        if type(data) is CurveGenerator.Curve:
+            data.width = f"(window.innerWidth*{data.width_factor}).toString() + \"px\""
+        return data
 
     def make_body(self):
         self.body.append('<body style=\"background-color: lightgrey;\">\n')
@@ -135,10 +140,15 @@ class HtmlGenerator:
     def add_image(self, path, size="300px"):
         self.body.append(self.image(path, size))
 
-    def curve(self, data, title=None, x_labels=None, font_color="black", width="300px", ):
+    def curve(self, data, title=None, x_labels=None, font_color="black", width_factor=1, ):
         self.hasCurveHeader = True
         return self.curveGen.make_curve(data=data, font_color=font_color,
-                                             title=title, width=width, x_labels=x_labels)
+                                             title=title, width_factor=width_factor, x_labels=x_labels)
+
+    def add_curve(self, data, title=None, x_labels=None, font_color="black", width_factor=1):
+        self.body.append("<div>")
+        self.body.append(self.curve(data, title=title, x_labels=x_labels, font_color=font_color, width_factor=width_factor))
+        self.body.append("</div>")
 
     def text(self, text):
         return text

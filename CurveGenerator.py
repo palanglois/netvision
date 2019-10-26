@@ -5,14 +5,15 @@ class Curve:
     def __init__(self, data,
                  font_color="white",
                  title=None,
-                 width="100%",
+                 width_factor =1,
                  x_labels=None,
                  curve_it=0):
 
         self.data = data
         self.font_color = font_color
         self.title = title
-        self.width = width
+        self.width_factor = width_factor
+        self.width = f"(window.innerWidth*{width_factor}).toString() + \"px\""
         self.x_labels = x_labels
         self.curve_it = curve_it
         self.instance_number = 0
@@ -40,13 +41,12 @@ class Curve:
         if self.title is not None:
             options_dict["title"] = {"display": "false", "text": self.title, "fontColor": self.font_color}
         options = str(options_dict)
-        out_string += "  <canvas id=\"line-chart-%i-%i\" " \
-                      "width=\"inherit\" height=\"inherit\"></canvas>\n" % (self.curve_it, self.instance_number)
+        out_string += "  <canvas id=\"line-chart-%i-%i\"></canvas>\n" % (self.curve_it, self.instance_number)
         ctx = f"document.getElementById(\"line-chart-{self.curve_it}-{self.instance_number}\")"
         out_string += "  <script>\n"
+        out_string += f"    {ctx}.parentNode.style.maxWidth = {self.width};\n"
         out_string += "    var myLineChart = new Chart(%s, {type: 'line', data: %s, options: %s});\n" % \
                       (ctx, str(data_real_dict), options)
-        out_string += "    myLineChart.canvas.parentNode.style.width = '%s';\n" % self.width
         out_string += "  </script>\n"
 
         return out_string
@@ -66,7 +66,7 @@ class CurveGenerator:
     def make_curve(self, data,
                    font_color="white",
                    title=None,
-                   width="100%",
+                   width_factor=1.,
                    x_labels=None):
         self.curve_it += 1
-        return Curve(data, font_color, title, width, x_labels, self.curve_it)
+        return Curve(data, font_color, title, width_factor, x_labels, self.curve_it)

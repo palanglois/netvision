@@ -15,6 +15,7 @@ class Table:
         self.td_str_bold = None
         self.td_row_title_str = None
         self.width_percentage = None
+        self.row_title_weight = 5.
 
     def add_column(self, title):
         if self.are_columns_fixed:
@@ -34,7 +35,7 @@ class Table:
     def add_row(self, data, title=""):
         self.are_columns_fixed = True
         nb_rows_to_add = len(data) // len(self.columns)
-        padding = len(self.columns) - len(data) % len(self.columns)
+        padding = (len(self.columns) - len(data) % len(self.columns)) % len(self.columns)
         if len(data) % len(self.columns) != 0:
             nb_rows_to_add += 1
         for i in range(nb_rows_to_add):
@@ -50,13 +51,13 @@ class Table:
 
     def _pretreat_data(self, data):
         if type(data) is Curve:
-            data.width = "inherit"
+            data.width = f"({data.width_factor*self.width_percentage*self.row_title_weight}" \
+                f"*window.innerWidth*0.01).toString() + \"px\""
         return data
 
     def _make_td_str(self):
-        row_title_weight = 5.
-        self.width_percentage = 100. / float(len(self.columns) * row_title_weight + 1)
-        self.td_str = f"<td align=\"center\" width=\"{row_title_weight * self.width_percentage}%\">"
+        self.width_percentage = 100. / float(len(self.columns) * self.row_title_weight + 1)
+        self.td_str = f"<td align=\"center\" width=\"{self.row_title_weight * self.width_percentage}%\">"
         self.td_row_title_str = f"<td style=\"font-weight: bold;\" align=\"center\" width=\"{self.width_percentage}%\">"
         self.td_str_bold = f"<td style=\"font-weight: bold;\" align=\"center\" width=\"{self.width_percentage}%\">"
 

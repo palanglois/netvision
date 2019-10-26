@@ -44,13 +44,16 @@ def main():
     webpage.add_title("Table 2")
     table2 = webpage.add_table()
     table2.add_columns(["Column1", "Column2"])
-    table2.add_titleless_columns(10)
+    table2.add_titleless_columns(1)
 
     table2.add_row(["data1", webpage.image("lena.jpeg"), webpage.dict(mydict), 0])
-    table2.add_row([{"data1": 0.5}, webpage.image("lena.jpeg"), 0, webpage.confMat(rand_matrix)])
+    table2.add_row([{"data1": 0.5}, webpage.image("lena.jpeg"), curve, webpage.confMat(rand_matrix)])
     table2.add_row(["Additional_data"]*9)
     table2.add_row(["Additional_data"]*9)
-    table2.add_row([webpage.image("lena.jpeg")]*29)
+    table2.add_row([webpage.image("lena.jpeg")]*2)
+
+    # curve_2 = webpage.curve(curve_data, title="My curve", width_factor=0.8)
+    webpage.add_curve(curve_data, title="My curve", width_factor=0.6)
 
     webpage.return_html()
 
