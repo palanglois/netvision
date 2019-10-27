@@ -1,8 +1,8 @@
-from os.path import join, dirname
-
+from os.path import join, dirname, relpath, abspath
+from os import getcwd
 
 class MeshGenerator:
-    def __init__(self):
+    def __init__(self, html_path):
         self.curve_it = 0
         self.colors = ["#c0392b", " #2980b9", "#27ae60"]
         self.three_path = join(dirname(__file__), "js/three.js")
@@ -12,6 +12,7 @@ class MeshGenerator:
         self.MTLLoader_path = join(dirname(__file__), "js/MTLLoader.js")
         self.event_listener = []
         self.added_mesh = []
+        self.html_path = html_path
 
     def make_header(self):
         ret_str = ""
@@ -26,6 +27,8 @@ class MeshGenerator:
         return ret_str
 
     def make_mesh(self, mesh_path, title=None):
+        mesh_path = abspath(join(getcwd(), mesh_path))
+        mesh_path = relpath(mesh_path, dirname(self.html_path))
         out_string = f"<div id=\"mesh_{self.curve_it}\"> <h4>{title}</h4> </div>\n"
 
         out_string += "     <script>\n"
@@ -95,7 +98,7 @@ class MeshGenerator:
                 }\n\
              "
 
-        init_function = init_function.replace("my_mesh", "mesh_" + str(self.curve_it))
+        init_function = init_function.replace("my_mesh", "mesh_" + str(self.curve_it)).replace('output_atlas.obj', mesh_path)
         self.added_mesh.append("mesh_" + str(self.curve_it))
         out_string += init_function
 

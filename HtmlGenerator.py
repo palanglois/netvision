@@ -2,6 +2,7 @@ import CurveGenerator
 import MeshGenerator
 import Table
 import ConfusionMatrixGenerator
+from os.path import abspath
 
 """
 TODO : 
@@ -35,7 +36,7 @@ class HtmlGenerator:
         self.head = []
         self.body = []
         self.curveGen = CurveGenerator.CurveGenerator()
-        self.meshGen = MeshGenerator.MeshGenerator()
+        self.meshGen = MeshGenerator.MeshGenerator(html_path = abspath(self.path))
         self.confMatGen = ConfusionMatrixGenerator.ConfusionMatrixGenerator()
         self.tables = []
         self.title = title
