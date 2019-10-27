@@ -41,7 +41,7 @@ class HtmlGenerator:
         self.title = title
         self.hasCurveHeader = False
         self.hasMeshHeader = False
-        self.hasDict = False
+        self.hasDict_css = False
         self.make_header()
         self.make_body()
 
@@ -58,28 +58,21 @@ class HtmlGenerator:
                          " h3{  margin-top:10px; } </style>")
 
     def add_javascript_libraries(self):
-        if self.hasCurveHeader:
-            self.head.append(self.curveGen.make_header())
-        if self.hasMeshHeader:
-            self.head.append(self.meshGen.make_header())
+        pass
 
     def add_css(self):
-        if self.hasDict:
-            self.head.append(self.add_css_for_add_dict())
+        pass
 
     def return_html(self):
-        self.add_javascript_libraries()
-        self.add_css()
-
-        self.body.append(self.meshGen.end_mesh())
-        self.body.append("</body>\n")
-        self.head.append('</head>\n')
+        # self.add_javascript_libraries()
+        # self.add_css()
 
         begin_html = '<!DOCTYPE html>\n<html>\n'
         self.head_str = "".join(self.head)
         self.body_str = "".join([str(self._pretreat_data(x)) for x in self.body])
+
         end_html = "</html>\n"
-        webpage = begin_html + self.head_str + self.body_str + end_html
+        webpage = begin_html + self.head_str + self.meshGen.end_mesh() +  "</body>\n" + self.body_str + '</head>\n' + end_html
         if self.path is not None:
             with open(self.path, 'w') as output_file:
                 output_file.write(webpage)
@@ -141,6 +134,8 @@ class HtmlGenerator:
         self.body.append(self.image(path, size))
 
     def curve(self, data, title=None, x_labels=None, font_color="black", width_factor=1, ):
+        if not self.hasCurveHeader:
+            self.head.append(self.curveGen.make_header())
         self.hasCurveHeader = True
         return self.curveGen.make_curve(data=data, font_color=font_color,
                                              title=title, width_factor=width_factor, x_labels=x_labels)
@@ -157,6 +152,8 @@ class HtmlGenerator:
         self.body.append(f"<object  width=\"2000\" height=\"1000\"  type=\"text/plain\" data=\"{path}\" border=\"0\" ></object>")
 
     def mesh(self, mesh_path, title=""):
+        if not self.hasMeshHeader:
+            self.head.append(self.meshGen.make_header())
         self.hasMeshHeader = True
         return self.meshGen.make_mesh(mesh_path, title)
 
@@ -169,7 +166,9 @@ class HtmlGenerator:
         return self.confMatGen.make_confusionmatrix(data, rows_titles, colums_titles, title=title, colormap=colormap)
 
     def dict(self, data, title="PARAMETERS"):
-        self.hasDict = True
+        if not self.hasDict_css:
+            self.head.append(self.add_css_for_add_dict())
+        self.hasDict_css = True
         out_string = f"<span class=\"value\">{title} </span></br>\n"
         for key in data.keys():
             out_string += f"<span class=\"key\"> {key} </span> : <span class=\"value\">{data[key]} </span></br>\n"

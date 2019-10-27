@@ -164,6 +164,11 @@ class MeshGenerator:
         self.event_listener.append(init_function)
 
     def end_mesh(self):
+        """
+        This function is safe to call as many time as one wants
+        :return:
+        """
+        self.event_listener = []
         self.event_listener.append("<script>\n")
         self.make_onWindowResize()
         self.make_init_function()

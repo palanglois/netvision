@@ -39,6 +39,7 @@ def main():
     table1.add_column("Mesh")
     curve = webpage.curve(curve_data, title="My curve")
     table1.add_row([0.5, curve, curve, webpage.mesh("test/output_atlas.obj")], "line1")
+    webpage.return_html()
 
     # Make a 2nd table
     webpage.add_title("Table 2")
