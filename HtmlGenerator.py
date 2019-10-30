@@ -1,4 +1,4 @@
-import CurveGenerator
+import ChartGenerator
 import MeshGenerator
 import Table
 import ConfusionMatrixGenerator
@@ -35,7 +35,7 @@ class HtmlGenerator:
         self.path = path
         self.head = []
         self.body = []
-        self.curveGen = CurveGenerator.CurveGenerator()
+        self.curveGen = ChartGenerator.ChartGenerator()
         self.meshGen = MeshGenerator.MeshGenerator(html_path = abspath(self.path))
         self.confMatGen = ConfusionMatrixGenerator.ConfusionMatrixGenerator()
         self.tables = []
@@ -80,7 +80,7 @@ class HtmlGenerator:
         return webpage
 
     def _pretreat_data(self, data):
-        if type(data) is CurveGenerator.Curve:
+        if type(data) is ChartGenerator.Chart:
             data.width = f"(window.innerWidth*{data.width_factor}).toString() + \"px\""
         return data
 
@@ -134,16 +134,16 @@ class HtmlGenerator:
     def add_image(self, path, size="300px"):
         self.body.append(self.image(path, size))
 
-    def curve(self, data, title=None, x_labels=None, font_color="black", width_factor=1, ):
+    def chart(self, data, chart_type="line", title=None, x_labels=None, font_color="black", width_factor=1, ):
         if not self.hasCurveHeader:
             self.head.append(self.curveGen.make_header())
         self.hasCurveHeader = True
-        return self.curveGen.make_curve(data=data, font_color=font_color,
-                                             title=title, width_factor=width_factor, x_labels=x_labels)
+        return self.curveGen.make_chart(data=data, font_color=font_color, chart_type=chart_type,
+                                        title=title, width_factor=width_factor, x_labels=x_labels)
 
-    def add_curve(self, data, title=None, x_labels=None, font_color="black", width_factor=1):
+    def add_chart(self, data, chart_type="line", title=None, x_labels=None, font_color="black", width_factor=1):
         self.body.append("<div>")
-        self.body.append(self.curve(data, title=title, x_labels=x_labels, font_color=font_color, width_factor=width_factor))
+        self.body.append(self.chart(data, chart_type=chart_type, title=title, x_labels=x_labels, font_color=font_color, width_factor=width_factor))
         self.body.append("</div>")
 
     def text(self, text):

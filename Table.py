@@ -1,4 +1,4 @@
-from CurveGenerator import Curve
+from ChartGenerator import Chart
 
 
 class TableException(Exception):
@@ -50,7 +50,7 @@ class Table:
             self.rows.append(row_str)
 
     def _pretreat_data(self, data):
-        if type(data) is Curve:
+        if type(data) is Chart:
             data.width = f"({data.width_factor*self.width_percentage*self.row_title_weight}" \
                 f"*window.innerWidth*0.01).toString() + \"px\""
         return data

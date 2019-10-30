@@ -37,8 +37,8 @@ def main():
     table1.add_column("Accuracy2")
     table1.add_column("Curve")
     table1.add_column("Mesh")
-    curve = webpage.curve(curve_data, title="My curve")
-    table1.add_row([0.5, curve, curve, webpage.mesh("../test2.obj")], "line1")
+    curve = webpage.chart(curve_data, title="My curve")
+    table1.add_row([0.5, curve, curve, webpage.mesh("test/synlink.obj")], "line1")
     webpage.return_html()
 
     # Make a 2nd table
@@ -54,7 +54,9 @@ def main():
     table2.add_row([webpage.image("lena.jpeg")]*2)
 
     # curve_2 = webpage.curve(curve_data, title="My curve", width_factor=0.8)
-    webpage.add_curve(curve_data, title="My curve", width_factor=0.6)
+    table2.add_row([webpage.chart(curve_data, title="My curve", width_factor=0.6),
+                    webpage.chart(curve_data, title="My curve", width_factor=0.6, chart_type="bar"),
+                    webpage.chart(curve_data, title="My curve", width_factor=0.6, chart_type="pie")])
 
     webpage.return_html()
 
