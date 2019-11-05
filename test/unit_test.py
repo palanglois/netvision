@@ -58,8 +58,12 @@ def main():
                     webpage.chart(curve_data, title="My curve", width_factor=0.6, chart_type="bar"),
                     webpage.chart(curve_data, title="My curve", width_factor=0.6, chart_type="pie")])
 
-    webpage.return_html()
+    webpage.return_html(save_editable_version=True)
 
+    webpage_after = HtmlGenerator(path="test/test2.html", reload_path="test/test.pkl")
+    webpage_after.tables[-1].add_row(["test", "test", "test"])
+    webpage_after.add_title("test")
+    webpage_after.return_html()
 
 if __name__ == "__main__":
     main()

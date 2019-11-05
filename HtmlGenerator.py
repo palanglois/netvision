@@ -3,7 +3,7 @@ import MeshGenerator
 import Table
 import ConfusionMatrixGenerator
 from os.path import abspath
-
+import pickle
 """
 TODO : 
 
@@ -31,7 +31,7 @@ todo : le jour ou j'ai que ca a foutre
 
 
 class HtmlGenerator:
-    def __init__(self, path=None, title="NetVision visualization"):
+    def __init__(self, path=None, title="NetVision visualization", reload_path=None):
         self.path = path
         self.head = []
         self.body = []
@@ -45,6 +45,11 @@ class HtmlGenerator:
         self.hasDict_css = False
         self.make_header()
         self.make_body()
+        if reload_path is not None:
+            with open(reload_path, 'rb') as file_handler:
+                newObj = pickle.load(file_handler)
+                self.__dict__.update(newObj.__dict__)
+                self.path = path
 
     def make_header(self):
         self.head.append('<head>\n')
@@ -64,7 +69,7 @@ class HtmlGenerator:
     def add_css(self):
         pass
 
-    def return_html(self):
+    def return_html(self, save_editable_version=False):
         # self.add_javascript_libraries()
         # self.add_css()
 
@@ -77,6 +82,9 @@ class HtmlGenerator:
         if self.path is not None:
             with open(self.path, 'w') as output_file:
                 output_file.write(webpage)
+            if save_editable_version:
+                with open(self.path[:-4] + "pkl", 'wb') as output_file:
+                    pickle.dump(self, output_file)
         return webpage
 
     def _pretreat_data(self, data):
@@ -161,6 +169,7 @@ class HtmlGenerator:
     def add_table(self, title=""):
         table = Table.Table(title)
         self.body.append(table)
+        self.tables.append(table)
         return table
 
     def confMat(self, data, rows_titles=None, colums_titles=None, title="Confusion", colormap=None):
@@ -188,6 +197,9 @@ class HtmlGenerator:
                 }</style>\n\
             "
         return outstring
+
+    def dump(self):
+        pass
 
 
 if __name__ == '__main__':
