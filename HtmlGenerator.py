@@ -38,7 +38,7 @@ class HtmlGenerator:
         self.curveGen = ChartGenerator.ChartGenerator()
         self.meshGen = MeshGenerator.MeshGenerator(html_path = abspath(self.path))
         self.confMatGen = ConfusionMatrixGenerator.ConfusionMatrixGenerator()
-        self.tables = []
+        self.tables = {}
         self.title = title
         self.hasCurveHeader = False
         self.hasMeshHeader = False
@@ -169,7 +169,9 @@ class HtmlGenerator:
     def add_table(self, title=""):
         table = Table.Table(title)
         self.body.append(table)
-        self.tables.append(table)
+        if len(title) == 0:
+            title = str(len(self.tables))
+        self.tables[title] = table
         return table
 
     def confMat(self, data, rows_titles=None, colums_titles=None, title="Confusion", colormap=None):

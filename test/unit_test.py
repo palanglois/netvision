@@ -32,18 +32,18 @@ def main():
     webpage.add_subtitle("This is a subtitle")
 
     # Make a 1st table
-    table1 = webpage.add_table()
+    table1 = webpage.add_table("My awesome table")
     table1.add_column("Accuracy1")
     table1.add_column("Accuracy2")
     table1.add_column("Curve")
     table1.add_column("Mesh")
     curve = webpage.chart(curve_data, title="My curve")
-    table1.add_row([0.5, curve, curve, webpage.mesh("test/synlink.obj")], "line1")
+    table1.add_row([0.5, curve, curve, webpage.mesh("test/test.obj")], "line1")
     webpage.return_html()
 
     # Make a 2nd table
     webpage.add_title("Table 2")
-    table2 = webpage.add_table()
+    table2 = webpage.add_table("Table_test")
     table2.add_columns(["Column1", "Column2"])
     table2.add_titleless_columns(1)
 
@@ -61,7 +61,8 @@ def main():
     webpage.return_html(save_editable_version=True)
 
     webpage_after = HtmlGenerator(path="test/test2.html", reload_path="test/test.pkl")
-    webpage_after.tables[-1].add_row(["test", "test", "test"])
+    webpage_after.tables["Table_test"].add_row(["after edit test", "after edit test", "after edit test"])
+    webpage_after.tables["My awesome table"].add_row(["after edit test", "after edit test", "after edit test", "after edit test"])
     webpage_after.add_title("test")
     webpage_after.return_html()
 
