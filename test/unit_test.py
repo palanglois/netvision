@@ -2,7 +2,6 @@ from HtmlGenerator import HtmlGenerator
 
 
 def main():
-
     # Gather a few data to display
 
     # A curve
@@ -25,7 +24,7 @@ def main():
     rand_matrix = np.random.randint(-50, 50, (rows, cols)) / 5.0
 
     # Let's make a website!
-    webpage = HtmlGenerator(path="test/test.html")
+    webpage = HtmlGenerator(path="test/test.html", local_copy=True)
 
     # Make a title and a subtitle
     webpage.add_title("Table 1")
@@ -47,11 +46,11 @@ def main():
     table2.add_columns(["Column1", "Column2"])
     table2.add_titleless_columns(1)
 
-    table2.add_row(["data1", webpage.image("lena.jpeg"), webpage.dict(mydict), 0])
-    table2.add_row([{"data1": 0.5}, webpage.image("lena.jpeg"), curve, webpage.confMat(rand_matrix)])
+    table2.add_row(["data1", webpage.image("test/lena.jpeg"), webpage.dict(mydict), 0])
+    table2.add_row([{"data1": 0.5}, webpage.image("test/lena.jpeg"), curve, webpage.confMat(rand_matrix)])
     table2.add_row(["Additional_data"]*9)
     table2.add_row(["Additional_data"]*9)
-    table2.add_row([webpage.image("lena.jpeg")]*2)
+    table2.add_row([webpage.image("test/lena.jpeg")]*2)
 
     # curve_2 = webpage.curve(curve_data, title="My curve", width_factor=0.8)
     table2.add_row([webpage.chart(curve_data, title="My curve", width_factor=0.6),

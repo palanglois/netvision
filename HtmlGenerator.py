@@ -4,6 +4,10 @@ import Table
 import ConfusionMatrixGenerator
 from os.path import abspath
 import pickle
+from shutil import copy
+from os.path import join, exists, splitext
+from os import makedirs
+
 """
 TODO : 
 
@@ -31,7 +35,7 @@ todo : le jour ou j'ai que ca a foutre
 
 
 class HtmlGenerator:
-    def __init__(self, path=None, title="NetVision visualization", reload_path=None):
+    def __init__(self, path=None, title="NetVision visualization", reload_path=None, output_folder="media", local_copy = False):
         self.path = path
         self.head = []
         self.body = []
@@ -45,11 +49,20 @@ class HtmlGenerator:
         self.hasDict_css = False
         self.make_header()
         self.make_body()
+        self.local_copy = local_copy
         if reload_path is not None:
             with open(reload_path, 'rb') as file_handler:
                 newObj = pickle.load(file_handler)
                 self.__dict__.update(newObj.__dict__)
                 self.path = path
+
+        self.pict_it = 0
+
+        self.output_folder = join('/'.join(path.split(sep='/')[:-1]), output_folder) # Output folder for the website, specified by the user
+        self.image_folder = join(self.output_folder, "images")
+        self.image_folder_relative_html = join(output_folder, "images")
+        if not exists(self.image_folder):
+            makedirs(self.image_folder)
 
     def make_header(self):
         self.head.append('<head>\n')
@@ -134,6 +147,14 @@ class HtmlGenerator:
         self.body.append(f'</br>\n')
 
     def image(self, path, size="300px"):
+        if self.local_copy:
+            in_pict_file = path  # path to the image
+            pict_new_name = str(self.pict_it).zfill(3) + splitext(in_pict_file)[1]
+            out_pict_file = join(self.image_folder, pict_new_name)
+            copy(in_pict_file, out_pict_file)
+            path = join(self.image_folder_relative_html, pict_new_name)  # Path to use in html code
+            self.pict_it += 1
+
         body = []
         body.append(f'<a download={path} href={path} title="ImageName"> '
                     f'<img  src={path} width={size} height={size} /></a>\n')
