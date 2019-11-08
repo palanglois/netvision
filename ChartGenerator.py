@@ -22,13 +22,23 @@ class Chart:
         self.colors = ["#c0392b", "#2980b9", "#27ae60"]
 
     def __str__(self):
-        mini, maxi = min([min(v) for k, v in self.data.items()]), max([max(v) for k, v in self.data.items()])
-        if self.chart_type == "bar":
-            mini = 0
+
+        if self.chart_type == "scatter":
+            y_vals = []
+            for k, v in self.data.items():
+                for xy in v:
+                    y_vals.append(xy["y"])
+
+            mini, maxi = min(y_vals), max(y_vals)
+
+        else:
+            mini, maxi = min([min(v) for k, v in self.data.items()]), max([max(v) for k, v in self.data.items()])
+            if self.chart_type == "bar":
+                mini = 0
 
         self.instance_number += 1
         out_string = ""
-
+        
         data_real_dict = {"type": f"{self.chart_type}",
                           "datasets": [{"data": v, 'label': k, "lineTension": 0,
                                         "xLabels": [x + 1 for x in
@@ -53,7 +63,11 @@ class Chart:
         ctx = f"document.getElementById(\"line-chart-{self.chart_it}-{self.instance_number}\")"
         out_string += "  <script>\n"
         out_string += f"    {ctx}.parentNode.style.maxWidth = {self.width};\n"
-        out_string += f"    var myLineChart = new Chart({ctx}, {'{'}type: '{self.chart_type}', data: {str(data_real_dict)}, options: {options} {'}'});\n"
+        if self.chart_type=="scatter":
+            isScatter = ".Scatter" 
+        else:
+            isScatter = ""
+        out_string += f"    var myLineChart = new Chart{isScatter}({ctx}, {'{'}type: '{self.chart_type}', data: {str(data_real_dict)}, options: {options} {'}'});\n"
         # out_string += "    var myLineChart = new Chart(%s, {type: 'line', data: %s, options: %s});\n" % \
         #               (ctx, str(data_real_dict), options)
         out_string += "  </script>\n"

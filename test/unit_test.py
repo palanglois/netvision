@@ -1,3 +1,5 @@
+import sys
+sys.path.append("../")
 from HtmlGenerator import HtmlGenerator
 
 
@@ -53,7 +55,7 @@ def main():
     table2.add_row([webpage.image("test/lena.jpeg")]*2)
 
     # curve_2 = webpage.curve(curve_data, title="My curve", width_factor=0.8)
-    table2.add_row([webpage.chart(curve_data, title="My curve", width_factor=0.6),
+    table2.add_row([webpage.chart({"data": [{'x':2, 'y':0}, {'x':3, 'y':0}, {'x':4, 'y':3}, {'x':10, 'y':0}]}, title="My curve", chart_type="scatter", width_factor=0.6),
                     webpage.chart(curve_data, title="My curve", width_factor=0.6, chart_type="bar"),
                     webpage.chart(curve_data, title="My curve", width_factor=0.6, chart_type="pie")])
 
