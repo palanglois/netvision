@@ -1,5 +1,42 @@
 from os.path import join, dirname, relpath, abspath
 from os import getcwd
+import numpy as np
+
+class Mesh(object):
+    def __init__(self, obj_path):
+        self.obj_path = obj_path
+        self.read_obj()
+        self.normalize()
+        self.write_obj()
+
+    def read_obj(self):
+        with open(self.obj_path, "r") as in_file:
+            points = []
+            faces = []
+            for line in in_file:
+                line_s = line.split()
+                if len(line_s)==0:
+                    continue
+                if line_s[0] == "v":
+                    points.append([float(x) for x in line_s[1:4]])
+                if line_s[0] == "f":
+                    faces.append([int(x.split(sep='/')[0]) - 1 for x in line_s[1:4]])
+        
+        self.points = points
+        self.faces = faces
+
+    def normalize(self):
+        centroid = np.mean(self.points, axis=0, keepdims=True)
+        self.points = self.points - centroid
+        self.points = self.points / np.sqrt(np.max(np.sum(self.points**2, 1)))
+
+    def write_obj(self):
+        with open(self.obj_path, "w") as out_file:
+            out_file.write("\n".join(["v " + " ".join([str(coord) for coord in point]) for point in
+                                      self.points])
+                           + "\n"
+                           + "\n".join(["f " + " ".join([str(int(tri + 1)) for tri in face]) for face in
+                                        self.faces]))
 
 class MeshGenerator:
     def __init__(self, html_path):
@@ -14,6 +51,7 @@ class MeshGenerator:
         self.added_mesh = []
         self.html_path = html_path
 
+
     def make_header(self):
         ret_str = ""
         js_libs = [self.three_path, self.Detector_path, self.OrbitControls_path, self.OBJLoader_path,
@@ -27,8 +65,9 @@ class MeshGenerator:
         return ret_str
 
     def make_mesh(self, mesh_path, title=None):
-        mesh_path = abspath(join(getcwd(), mesh_path))
-        mesh_path = relpath(mesh_path, dirname(self.html_path))
+
+        # mesh_path = abspath(join(getcwd(), mesh_path))
+        # mesh_path = relpath(mesh_path, dirname(self.html_path))
         out_string = f"<div id=\"mesh_{self.curve_it}\"> <h4>{title}</h4> </div>\n"
 
         out_string += "     <script>\n"

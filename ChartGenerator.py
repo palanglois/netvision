@@ -27,7 +27,7 @@ class Chart:
             y_vals = []
             for k, v in self.data.items():
                 for xy in v:
-                    y_vals.append(xy["y"])
+                    y_vals.append(xy['y'])
 
             mini, maxi = min(y_vals), max(y_vals)
 

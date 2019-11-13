@@ -1,5 +1,6 @@
 import sys
 sys.path.append("../")
+sys.path.append("./")
 from HtmlGenerator import HtmlGenerator
 
 
@@ -39,7 +40,7 @@ def main():
     table1.add_column("Curve")
     table1.add_column("Mesh")
     curve = webpage.chart(curve_data, title="My curve")
-    table1.add_row([0.5, curve, curve, webpage.mesh("test/test.obj")], "line1")
+    table1.add_row([0.5, curve, curve, webpage.mesh("test/test.obj", normalize=True)], "line1")
     webpage.return_html()
 
     # Make a 2nd table

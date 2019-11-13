@@ -1,5 +1,6 @@
 import ChartGenerator
 import MeshGenerator
+from MeshGenerator import Mesh
 import Table
 import ConfusionMatrixGenerator
 from os.path import abspath
@@ -181,10 +182,19 @@ class HtmlGenerator:
     def add_textFile(self, path):
         self.body.append(f"<object  width=\"2000\" height=\"1000\"  type=\"text/plain\" data=\"{path}\" border=\"0\" ></object>")
 
-    def mesh(self, mesh_path, title=""):
+    def mesh(self, mesh_path, title="", normalize=True):
         if not self.hasMeshHeader:
             self.head.append(self.meshGen.make_header())
         self.hasMeshHeader = True
+        if self.local_copy:
+            in_pict_file = mesh_path  # path to the image
+            pict_new_name = str(self.pict_it).zfill(3) + splitext(in_pict_file)[1]
+            out_pict_file = join(self.image_folder, pict_new_name)
+            copy(in_pict_file, out_pict_file)
+            mesh_path = join(self.image_folder_relative_html, pict_new_name)  # Path to use in html code
+            self.pict_it += 1
+            if normalize:
+                Mesh(out_pict_file)            
         return self.meshGen.make_mesh(mesh_path, title)
 
     def add_table(self, title=""):
