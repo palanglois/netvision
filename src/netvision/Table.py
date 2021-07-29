@@ -1,4 +1,4 @@
-from ChartGenerator import Chart
+from netvision.ChartGenerator import Chart
 
 
 class TableException(Exception):

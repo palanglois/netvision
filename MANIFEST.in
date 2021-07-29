@@ -1,0 +1,3 @@
+include README.md
+include src/netvision/colormap.npy
+graft src/netvision/js

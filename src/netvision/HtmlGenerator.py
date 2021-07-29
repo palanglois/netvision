@@ -1,14 +1,14 @@
-import ChartGenerator
-import MeshGenerator
-from MeshGenerator import Mesh
-import Table
-import ConfusionMatrixGenerator
 from os.path import abspath
 import pickle
 from shutil import copy
 from os.path import join, exists, splitext
 from os import makedirs
 
+from .MeshGenerator import Mesh
+import netvision.ChartGenerator as ChartGenerator
+import netvision.MeshGenerator as MeshGenerator 
+import netvision.Table as Table 
+import netvision.ConfusionMatrixGenerator as ConfusionMatrixGenerator 
 """
 TODO : 
 
