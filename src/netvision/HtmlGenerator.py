@@ -170,12 +170,14 @@ class HtmlGenerator:
 
         body = []
         if not create_thumbnail:
-            body.append(f'<a download={path_html_code} href={path_html_code} title="ImageName"> '
-                        f'<img  src={path_html_code} width={size} height={size} /></a>\n')
+            body.append(
+                f'<a download={path_html_code} href={path_html_code} title="ImageName"> '
+                f'<img  src={path_html_code} width={size} height={size} loading="lazy" /></a>\n'
+            )
         else:
             body.append(
                 f'<a href={path_html_code} title="ImageName"> '
-                f"<img  src={path_html_code_thumbnail} width={size} height={size} /></a>\n"
+                f'<img  src={path_html_code_thumbnail} width={size} height={size} loading="lazy"/></a>\n'
             )
         return "".join(body)
 
