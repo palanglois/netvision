@@ -1,7 +1,7 @@
 import sys
 sys.path.append("../")
 sys.path.append("./")
-from HtmlGenerator import HtmlGenerator
+from netvision.HtmlGenerator import HtmlGenerator
 
 
 def main():
@@ -53,7 +53,7 @@ def main():
     table2.add_row([{"data1": 0.5}, webpage.image("test/lena.jpeg"), curve, webpage.confMat(rand_matrix)])
     table2.add_row(["Additional_data"]*9)
     table2.add_row(["Additional_data"]*9)
-    table2.add_row([webpage.image("test/lena.jpeg")]*2)
+    table2.add_row([webpage.image("test/lena.jpeg", create_thumbnail=True)]*2)
 
     # curve_2 = webpage.curve(curve_data, title="My curve", width_factor=0.8)
     table2.add_row([webpage.chart({"data": [{'x':2, 'y':0}, {'x':3, 'y':0}, {'x':4, 'y':3}, {'x':10, 'y':0}]}, title="My curve", chart_type="scatter", width_factor=0.6),

@@ -4,11 +4,13 @@ from shutil import copy
 from os.path import join, exists, splitext
 from os import makedirs
 
-from .MeshGenerator import Mesh
+from netvision.MeshGenerator import Mesh
 import netvision.ChartGenerator as ChartGenerator
 import netvision.MeshGenerator as MeshGenerator 
 import netvision.Table as Table 
 import netvision.ConfusionMatrixGenerator as ConfusionMatrixGenerator 
+from netvision.utils import create_thumbnail_function
+
 """
 TODO : 
 
@@ -147,22 +149,38 @@ class HtmlGenerator:
     def add_linebreak(self):
         self.body.append(f'</br>\n')
 
-    def image(self, path, size="300px"):
+    def image(self, path, size="300px", create_thumbnail=False):
+
         if self.local_copy:
             in_pict_file = path  # path to the image
             pict_new_name = str(self.pict_it).zfill(3) + splitext(in_pict_file)[1]
             out_pict_file = join(self.image_folder, pict_new_name)
             copy(in_pict_file, out_pict_file)
-            path = join(self.image_folder_relative_html, pict_new_name)  # Path to use in html code
+            path_html_code = join(self.image_folder_relative_html, pict_new_name)  # Path to use in html code
             self.pict_it += 1
+            if create_thumbnail:
+                thumbnail_path = create_thumbnail_function(path)
+                pict_new_name = str(self.pict_it).zfill(3) + splitext(thumbnail_path)[1]
+                out_pict_file = join(self.image_folder, pict_new_name)
+                copy(thumbnail_path, out_pict_file)
+                path_html_code_thumbnail = join(
+                    self.image_folder_relative_html, pict_new_name
+                )  # Path to use in html code
+                self.pict_it += 1
 
         body = []
-        body.append(f'<a download={path} href={path} title="ImageName"> '
-                    f'<img  src={path} width={size} height={size} /></a>\n')
+        if not create_thumbnail:
+            body.append(f'<a download={path_html_code} href={path_html_code} title="ImageName"> '
+                        f'<img  src={path_html_code} width={size} height={size} /></a>\n')
+        else:
+            body.append(
+                f'<a href={path_html_code} title="ImageName"> '
+                f"<img  src={path_html_code_thumbnail} width={size} height={size} /></a>\n"
+            )
         return "".join(body)
 
-    def add_image(self, path, size="300px"):
-        self.body.append(self.image(path, size))
+    def add_image(self, path, size="300px", create_thumbnail=False):
+        self.body.append(self.image(path, size, create_thumbnail=create_thumbnail))
 
     def chart(self, data, chart_type="line", title=None, x_labels=None, font_color="black", width_factor=1, ):
         if not self.hasCurveHeader:

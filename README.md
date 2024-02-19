@@ -11,3 +11,10 @@
 Fuel your collaborations by sending awesome webpage results.
 Forget about HTML and CSS and Javascript, just effortlessly use Python.
 
+Features:
+* Images (auto thumbnail)
+* Adaptive loading of what is in the viewer
+* Curves
+* 3D models
+
+PRs welcome!
