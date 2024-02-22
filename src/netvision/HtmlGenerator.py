@@ -150,7 +150,7 @@ class HtmlGenerator:
         self.body.append(f'</br>\n')
 
     def image(self, path, size="300px", create_thumbnail=False):
-
+        body = []
         if self.local_copy:
             in_pict_file = path  # path to the image
             pict_new_name = str(self.pict_it).zfill(3) + splitext(in_pict_file)[1]
@@ -168,17 +168,19 @@ class HtmlGenerator:
                 )  # Path to use in html code
                 self.pict_it += 1
 
-        body = []
-        if not create_thumbnail:
-            body.append(
-                f'<a download={path_html_code} href={path_html_code} title="ImageName"> '
-                f'<img  src={path_html_code} width={size} height={size} loading="lazy" /></a>\n'
-            )
+            if not create_thumbnail:
+                body.append(
+                    f'<a download={path_html_code} href={path_html_code} title="ImageName"> '
+                    f'<img  src={path_html_code} width={size} height={size} loading="lazy" /></a>\n'
+                )
+            else:
+                body.append(
+                    f'<a href={path_html_code} title="ImageName"> '
+                    f'<img  src={path_html_code_thumbnail} width={size} height={size} loading="lazy"/></a>\n'
+                )
         else:
-            body.append(
-                f'<a href={path_html_code} title="ImageName"> '
-                f'<img  src={path_html_code_thumbnail} width={size} height={size} loading="lazy"/></a>\n'
-            )
+            body.append(f'<a download={path} href={path} title="ImageName"> '
+                    f'<img  src={path} width={size} height={size}  loading="lazy"/></a>\n')
         return "".join(body)
 
     def add_image(self, path, size="300px", create_thumbnail=False):
