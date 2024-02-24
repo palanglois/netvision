@@ -18,3 +18,13 @@ Features:
 * 3D models
 
 PRs welcome!
+
+
+## Pypi push
+
+```
+# 1. Increment version in setup.py
+rm dist/*
+python -m build
+python3 -m twine upload --repository pypi dist/* # prompt for Pypi token.
+```
